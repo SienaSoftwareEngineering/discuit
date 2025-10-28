@@ -21,9 +21,13 @@ mysql -e "GRANT ALL PRIVILEGES ON discuit.* TO 'discuit'@'127.0.0.1';"
 # Run migrations
 /app/discuit migrate run
 
+# Build the backend
+go build
+
 # Build the UI
 echo "Building the UI..."
 cd /app/ui
+npm ci
 npm run build
 cd ..
 
