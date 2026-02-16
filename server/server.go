@@ -175,6 +175,14 @@ func New(db *sql.DB, conf *config.Config) (*Server, error) {
 	r.Handle("/api/communities/{communityID}/pro_pic", s.withHandler(s.handleCommunityProPic)).Methods("POST", "DELETE")
 	r.Handle("/api/communities/{communityID}/banner_image", s.withHandler(s.handleCommunityBannerImage)).Methods("POST", "DELETE")
 
+	// Donation routes
+	r.Handle("/api/communities/{communityId}/donate", s.withHandler(s.createDonation)).Methods("POST")
+	r.Handle("/api/communities/{communityId}/donations", s.withHandler(s.getCommunityDonations)).Methods("GET")
+	r.Handle("/api/communities/{communityId}/donations/stats", s.withHandler(s.getCommunityDonationStats)).Methods("GET")
+	r.Handle("/api/communities/{communityId}/supporters", s.withHandler(s.getTopSupporters)).Methods("GET")
+	r.Handle("/api/donations/{donationId}/complete", s.withHandler(s.completeDonation)).Methods("POST")
+	r.Handle("/api/users/{username}/donations", s.withHandler(s.getUserDonations)).Methods("GET")
+
 	r.Handle("/api/notifications", s.withHandler(s.getNotifications)).Methods("GET")
 	r.Handle("/api/notifications", s.withHandler(s.updateNotifications)).Methods("POST")
 	r.Handle("/api/notifications/{notificationID}", s.withHandler(s.getNotification)).Methods("GET", "PUT")
