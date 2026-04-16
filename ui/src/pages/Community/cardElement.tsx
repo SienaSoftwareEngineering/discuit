@@ -2,7 +2,7 @@ import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-
 import { loadStripe } from '@stripe/stripe-js';
 import { useState } from 'react';
 
-const stripePromise = loadStripe('pk_test_51TCN4f8umO8gBqTlmIu4kZb6bfin7XHV8zUC5fsBZRSwRmGdRnU8KBV8bwjBvXyRtpgDr1p2eC8pdPUwvkG0gOKy00ZPbWHMKF');
+const stripePromise = loadStripe('pk_test_51TBLlcAc1nzqw1af9VTz5otuOhETdVat3E9XFSoF8h4GVBOKpzev5raMfRj3gyuJ4byIoTycovoLTbdpm3NlCe0o00tWMvYdaC');
 
 // Type for CardForm props
 type CardFormProps = {
@@ -30,10 +30,12 @@ const CheckoutForm = ({ amount }: { amount: number }) => {
     setIsProcessing(true); // Start processing payment
 
     try {
+      // Use the current origin so Stripe always redirects to the correct frontend route.
+      // This ensures the user lands on /payment-complete, which is handled by the React app.
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: "http://localhost:8080/payment-complete", // Make sure this URL is correct
+          return_url: `${window.location.origin}/payment-complete`,
         },
       });
 
